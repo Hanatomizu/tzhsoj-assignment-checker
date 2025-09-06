@@ -1,0 +1,12 @@
+This is a project for helping check assignments submission
+on the Online Judge Platform TZHSOJ.
+
+License:
+    MIT License
+
+Acknowledgements:
+    1. requests
+    2. beautifulsoup4
+    3. uv
+    4. Pandas
+    5. openpyxl

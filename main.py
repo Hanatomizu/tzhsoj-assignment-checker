@@ -152,25 +152,29 @@ def checker(username: str, pid: str):
     for i, sub in enumerate(submissions, 1):
         print(f"{i}. [{sub['time']}] {sub['problem']} - {sub['status']} ({sub['score']})")
         if sub['time'] == "100Accepted":
-            result[username] = 1
+            result[username].append(1)
+            break
+    else:
+        result[username].append(0)
 
     output_file = f"submissions_{username}_{pid}.json"
     scraper.save_to_file(submissions, output_file)
 
 
 def main():
-    if len(sys.argv) != 4:
+    if len(sys.argv) < 4:
         print("Arguments: main.py [usernameFormat] [Member Count] [pid].")
         return
 
     usernameFormat = sys.argv[1]
     counts = int(sys.argv[2])
-    pid = sys.argv[3]
+    pids = sys.argv[3:]
     for i in range(1, counts+1):
         username = usernameFormat+str(i) if i > 9 else usernameFormat + '0' + str(i)
-        result[username] = 0
-        checker(username, pid)
-    df = pd.DataFrame.from_dict(result, orient='index', columns=["Is Accepted"])
+        result[username] = []
+        for pid in pids:
+            checker(username, pid)
+    df = pd.DataFrame.from_dict(result, orient='index', columns=pids)
     df.to_excel("result.xlsx")
 
 if __name__ == "__main__":
